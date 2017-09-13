@@ -12,7 +12,7 @@ Jobber is lightweight, simple and distributed task scheduler.
 PM> Install-Package Jobber
 ```
 
-####Features:
+###Features:
 - Easy to use
 - Pub/Sub mode distributed task scheduling
 - Standalone mode task scheduling
@@ -21,7 +21,7 @@ PM> Install-Package Jobber
 - Logging (currently only support NLog)
 
 
-####To-Do:
+###To-Do:
 - Dashboard for service instances
 - Abstraction for logging
 
@@ -173,7 +173,7 @@ class Program
 }
 ```
 
-####Samples:
+###Samples:
 - [Jobber.Sample.JobConsumer]
 - [Jobber.Sample.JobConsumerWithAutofac]
 - [Jobber.Sample.JobProducer]
