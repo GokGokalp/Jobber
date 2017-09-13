@@ -15,6 +15,7 @@
       <dependency id="StackExchange.Redis" version="1.2.6" />
       <dependency id="Topshelf" version="4.0.3" />
       <dependency id="MassTransit.RabbitMQ" version="3.5.7" />
+      <dependency id="MassTransit.Autofac" version="3.5.7" />
     </dependencies>
   </metadata>
   <files>

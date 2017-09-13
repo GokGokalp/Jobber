@@ -1,9 +1,11 @@
 #   **Jobber**
 ------------------------------
 
-![alt tag](https://raw.githubusercontent.com/GokGokalp/Jobber/master/misc/jobber-logo.png)
+![alt tag](https://raw.githubusercontent.com/GokGokalp/Jobber/develop/misc/jobber-logo.png)
 
 Jobber is lightweight, simple and distributed task scheduler.
+
+[![NuGet version](https://badge.fury.io/nu/Jobber.svg)](https://badge.fury.io/nu/Jobber)
 
 ### NuGet Packages
 ``` 
@@ -18,15 +20,14 @@ PM> Install-Package Jobber
 - Includes service recovery modes
 - Logging (currently only support NLog)
 
+
 ####To-Do:
 - Dashboard for service instances
 - Abstraction for logging
-- ...
 
 Usage:
 -----
-
-For **Standalone** job worker mode:
+For **standalone** job worker mode:
 
 ```cs
 class TodoStandaloneJobWorker : StandaloneJobWorkerBase
@@ -69,8 +70,7 @@ class Program
 }
 ```
 
-
-For **Pub/Sub** job worker mode, firstly let's initialize job producer.
+For **pub/sub** job worker mode, firstly let's initialize job producer.
 
 ```cs
 class TodoJobProducer : JobProducerBase<Todo>
@@ -174,4 +174,14 @@ class Program
 ```
 
 ####Samples:
-- 
+- [Jobber.Sample.JobConsumer]
+- [Jobber.Sample.JobConsumerWithAutofac]
+- [Jobber.Sample.JobProducer]
+- [Jobber.Sample.StandaloneJobWorker]
+- [Jobber.Sample.StandaloneJobWorkerWithAutofac]
+
+[Jobber.Sample.JobConsumer]: https://github.com/GokGokalp/Jobber/tree/develop/Jobber.Sample.JobConsumer
+[Jobber.Sample.JobConsumerWithAutofac]: https://github.com/GokGokalp/Jobber/tree/develop/Jobber.Sample.JobConsumerWithAutofac
+[Jobber.Sample.JobProducer]: https://github.com/GokGokalp/Jobber/tree/develop/Jobber.Sample.JobProducer
+[Jobber.Sample.StandaloneJobWorker]: https://github.com/GokGokalp/Jobber/tree/develop/Jobber.Sample.StandaloneJobWorker
+[Jobber.Sample.StandaloneJobWorkerWithAutofac]: https://github.com/GokGokalp/Jobber/tree/develop/Jobber.Sample.StandaloneJobWorkerWithAutofac
