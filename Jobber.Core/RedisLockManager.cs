@@ -16,10 +16,10 @@ namespace Jobber.Core
 
         private static IDatabase _database;
 
-        public RedisLockManager Initialize(EndPoint[] redisEndPoints)
+        public RedisLockManager Initialize(EndPoint[] redisEndPoints, string password = null)
         {
             _database = RedisConnectionFactory.Instance.SetEndPoints(redisEndPoints)
-                .GetConnection().GetDatabase(0);
+                .GetConnection(password).GetDatabase(0);
 
             return this;
         }

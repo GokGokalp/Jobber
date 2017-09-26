@@ -27,12 +27,17 @@ namespace Jobber.Core
             return this;
         }
 
-        public ConnectionMultiplexer GetConnection()
+        public ConnectionMultiplexer GetConnection(string password = null)
         {
             var configuration = new ConfigurationOptions
             {
                 AbortOnConnectFail = false
             };
+
+            if (!string.IsNullOrEmpty(password))
+            {
+                configuration.Password = password;
+            }
 
             foreach (var endPoint in _endPoints)
             {
