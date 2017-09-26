@@ -17,6 +17,7 @@ namespace Jobber.Sample.StandaloneJobWorker
             {
                 new DnsEndPoint("", 6379)
             };
+            string redisPassword = "sayHello";
 
             JobberBuilder.Instance.SetJobName(jobName)
                                   .EnableServiceRecovery(restartDelayInMinutes)
@@ -25,7 +26,7 @@ namespace Jobber.Sample.StandaloneJobWorker
                                         .SetSchedulingTickTime(schedulingTickTime)
                                         .HighAvailabilitySetup()
                                                 .UseActivePassive()
-                                                .InitializeRedisForLocking(redisEndPoints)
+                                                .InitializeRedisForLocking(redisEndPoints, redisPassword)
                                                 .SetLockingDuration(lockDuration)
                                                 .Then()
                                         .RunAsLocalService();
