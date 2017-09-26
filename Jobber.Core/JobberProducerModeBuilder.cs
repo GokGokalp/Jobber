@@ -50,9 +50,10 @@ namespace Jobber.Core
 
         public static JobberProducerActivePassiveModeBuilder Instance => _Instance.Value;
 
-        public JobberProducerActivePassiveModeBuilder InitializeRedisForLocking(List<EndPoint> redisEndPoints)
+        public JobberProducerActivePassiveModeBuilder InitializeRedisForLocking(List<EndPoint> redisEndPoints, string password = null)
         {
             JobberConfiguration.RedisEndPoints = redisEndPoints;
+            JobberConfiguration.RedisPassword = password;
 
             return this;
         }
