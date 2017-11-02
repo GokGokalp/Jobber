@@ -22,5 +22,6 @@ namespace Jobber.Core
         public static List<EndPoint> RedisEndPoints { get; set; }
         public static string RedisPassword { get; set; }
         public static TimeSpan LockingDuration { get; set; }
+        public static int RedisDatabase { get; set; }
     }
 }
