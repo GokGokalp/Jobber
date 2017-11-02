@@ -12,7 +12,7 @@ namespace Jobber.Core
         {
             if (JobberConfiguration.ProducerMode == ProducerMode.ActivePassive)
             {
-                _lockManager = RedisLockManager.Instance.Initialize(JobberConfiguration.RedisEndPoints.ToArray(), JobberConfiguration.RedisPassword);
+                _lockManager = RedisLockManager.Instance.Initialize(JobberConfiguration.RedisEndPoints.ToArray(), JobberConfiguration.RedisPassword, JobberConfiguration.RedisDatabase);
             } 
         }
 
