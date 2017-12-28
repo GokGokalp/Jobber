@@ -33,17 +33,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GreenPipes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
-      <HintPath>..\packages\GreenPipes.1.0.9\lib\net452\GreenPipes.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="GreenPipes, Version=1.2.0.96, Culture=neutral, PublicKeyToken=b800c4cfcdeea87b, processorArchitecture=MSIL">
+      <HintPath>..\packages\GreenPipes.1.2.0\lib\net452\GreenPipes.dll</HintPath>
     </Reference>
     <Reference Include="MassTransit, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
       <HintPath>..\packages\MassTransit.3.5.7\lib\net452\MassTransit.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NewId, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
-      <HintPath>..\packages\NewId.3.0.0\lib\net452\NewId.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NewId, Version=3.0.1.17, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\NewId.3.0.1\lib\net452\NewId.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>

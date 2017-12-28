@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Jobber</id>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
     <title>Jobber</title>
     <authors>Gökhan Gökalp</authors>
     <owners>Gökhan Gökalp</owners>
@@ -16,6 +16,7 @@
       <dependency id="Topshelf" version="4.0.3" />
       <dependency id="MassTransit.RabbitMQ" version="3.5.7" />
       <dependency id="MassTransit.Autofac" version="3.5.7" />
+      <dependency id="Autofac" version="4.6.2" />
     </dependencies>
   </metadata>
   <files>
