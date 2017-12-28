@@ -27,6 +27,9 @@ namespace Jobber.Core
         private int _incrementalRetryLimit;
         private TimeSpan _initialIncrementalRetryInterval;
         private TimeSpan _intervalIncrementalRetryIncrement;
+        private int? _concurrencyLimit;
+        private int? _rateLimit;
+        private TimeSpan? _rateLimitInterval;
 
         #region Fluent Methods
         public JobberConsumerBuilder SetRabbitMqCredentials(string rabbitMqUri, string rabbitMqUserName, string rabbitMqPassword)
@@ -41,6 +44,21 @@ namespace Jobber.Core
         public JobberConsumerBuilder SetQueueName(string queueName)
         {
             _queueName = queueName;
+
+            return this;
+        }
+
+        public JobberConsumerBuilder SetConcurrencyLimit(int concurrencyLimit)
+        {
+            _concurrencyLimit = concurrencyLimit;
+
+            return this;
+        }
+
+        public JobberConsumerBuilder SetRateLimit(int rateLimit, TimeSpan interval)
+        {
+            _rateLimit = rateLimit;
+            _rateLimitInterval = interval;
 
             return this;
         }
@@ -67,10 +85,12 @@ namespace Jobber.Core
                 });
 
                 UseIncrementalRetryPolicy(cfg);
+                SetRateLimit(cfg);
 
                 cfg.ReceiveEndpoint(host, _queueName, e =>
                 {
-                   e.Consumer<TJobConsumer>();
+                    SetConcurrencyLimit(e);
+                    e.Consumer<TJobConsumer>();
                 });
             });
 
@@ -89,9 +109,11 @@ namespace Jobber.Core
                 });
 
                 UseIncrementalRetryPolicy(cfg);
+                SetRateLimit(cfg);
 
                 cfg.ReceiveEndpoint(host, _queueName, e =>
                 {
+                    SetConcurrencyLimit(e);
                     e.LoadFrom(lifetimeScope);
                 });
             });
@@ -145,6 +167,22 @@ namespace Jobber.Core
                 {
                     retryConfig.Incremental(_incrementalRetryLimit, _initialIncrementalRetryInterval, _intervalIncrementalRetryIncrement);
                 });
+            }
+        }
+
+        private void SetConcurrencyLimit(IRabbitMqReceiveEndpointConfigurator cfg)
+        {
+            if (_concurrencyLimit != null)
+            {
+                cfg.UseConcurrencyLimit(_concurrencyLimit.Value);
+            }
+        }
+
+        private void SetRateLimit(IRabbitMqBusFactoryConfigurator cfg)
+        {
+            if (_rateLimit != null && _rateLimitInterval != null)
+            {
+                cfg.UseRateLimit(_rateLimit.Value, _rateLimitInterval.Value);
             }
         }
         #endregion
