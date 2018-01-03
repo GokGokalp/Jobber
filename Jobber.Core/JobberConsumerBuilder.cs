@@ -109,10 +109,10 @@ namespace Jobber.Core
                 });
 
                 UseIncrementalRetryPolicy(cfg);
-                SetRateLimit(cfg);
 
                 cfg.ReceiveEndpoint(host, _queueName, e =>
                 {
+                    SetRateLimit(e);
                     SetConcurrencyLimit(e);
                     e.LoadFrom(lifetimeScope);
                 });
@@ -178,7 +178,7 @@ namespace Jobber.Core
             }
         }
 
-        private void SetRateLimit(IRabbitMqBusFactoryConfigurator cfg)
+        private void SetRateLimit(IRabbitMqReceiveEndpointConfigurator cfg)
         {
             if (_rateLimit != null && _rateLimitInterval != null)
             {
