@@ -85,10 +85,10 @@ namespace Jobber.Core
                 });
 
                 UseIncrementalRetryPolicy(cfg);
-                SetRateLimit(cfg);
-
+                
                 cfg.ReceiveEndpoint(host, _queueName, e =>
                 {
+                    SetRateLimit(e);
                     SetConcurrencyLimit(e);
                     e.Consumer<TJobConsumer>();
                 });
