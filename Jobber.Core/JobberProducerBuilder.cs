@@ -49,18 +49,29 @@ namespace Jobber.Core
             return this;
         }
 
-        public JobberProducerBuilder SetQueueName(string queueName)
+        public JobberProducerBuilder SetMultipleQueueName(params string[] queueNames)
         {
             _bus = CreateBus();
 
-            if (!_rabbitMqUri.EndsWith("/"))
+            foreach (var queueName in queueNames)
             {
-                queueName = queueName.Insert(0, "/");
+                string _queueName = queueName;
+                if (!_rabbitMqUri.EndsWith("/"))
+                {
+                    _queueName = _queueName.Insert(0, "/");
+                }
+
+                var sendToUri = new Uri($"{_rabbitMqUri}{_queueName}");
+
+                JobberConfiguration.SendEndpoints.Add(_queueName, _bus.GetSendEndpoint(sendToUri).Result);
             }
 
-            var sendToUri = new Uri($"{_rabbitMqUri}{queueName}");
+            return this;
+        }
 
-            JobberConfiguration.SendEndpoint = _bus.GetSendEndpoint(sendToUri).Result;
+        public JobberProducerBuilder SetQueueName(string queueName)
+        {
+            SetMultipleQueueName(queueName);
 
             return this;
         }
