@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using NLog;
+using System.Linq;
 
 namespace Jobber.Core
 {
@@ -23,7 +24,45 @@ namespace Jobber.Core
             {
                 try
                 {
-                    await JobberConfiguration.SendEndpoint.Send(job);
+                    await JobberConfiguration.SendEndpoints.Values.First().Send(job);
+                    producedJobs++;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                }
+            });
+
+            if ((jobs.Count - producedJobs) > 0)
+            {
+                Logger.Error($"{jobs.Count - producedJobs} {JobberConfiguration.JobName} jobs could not be produced.");
+            }
+
+            Logger.Info($"Produced job count: {producedJobs}");
+            Logger.Info("[JobProducerBase<TJob>.ProduceJobs] method end.");
+        }
+    }
+
+    public abstract class JobMultipleProducerBase<TJob> : IJobProducer
+    {
+        private static readonly Logger Logger = LogManager.GetLogger(JobberConfiguration.JobName);
+
+        protected abstract List<MultipleQueueJob<TJob>> GetJobs();
+
+        public void ProduceJobs()
+        {
+            Logger.Info("[JobProducerBase<TJob>.ProduceJobs] method begin.");
+
+            List<MultipleQueueJob<TJob>> jobs = GetJobs();
+
+            Logger.Info($"Total job count: {jobs.Count}");
+
+            int producedJobs = 0;
+            jobs.ForEach(async job =>
+            {
+                try
+                {
+                    await JobberConfiguration.SendEndpoints[job.QueueName].Send(job.Job);
                     producedJobs++;
                 }
                 catch (Exception ex)
