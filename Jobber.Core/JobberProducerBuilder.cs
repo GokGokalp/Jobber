@@ -55,15 +55,14 @@ namespace Jobber.Core
 
             foreach (var queueName in queueNames)
             {
-                string _queueName = queueName;
                 if (!_rabbitMqUri.EndsWith("/"))
                 {
-                    _queueName = _queueName.Insert(0, "/");
+                    _rabbitMqUri = _rabbitMqUri.Insert(0, "/");
                 }
 
-                var sendToUri = new Uri($"{_rabbitMqUri}{_queueName}");
+                var sendToUri = new Uri($"{_rabbitMqUri}{queueName}");
 
-                JobberConfiguration.SendEndpoints.Add(_queueName, _bus.GetSendEndpoint(sendToUri).Result);
+                JobberConfiguration.SendEndpoints.Add(queueName, _bus.GetSendEndpoint(sendToUri).Result);
             }
 
             return this;
