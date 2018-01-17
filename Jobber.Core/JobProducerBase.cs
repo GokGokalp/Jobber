@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NLog;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Jobber.Core
 {
@@ -22,14 +23,50 @@ namespace Jobber.Core
             int producedJobs = 0;
             jobs.ForEach(async job =>
             {
-                try
+                if (JobberConfiguration.IsProducerTransientHandleModOn)
                 {
-                    await JobberConfiguration.SendEndpoints.Values.First().Send(job);
-                    producedJobs++;
+                    bool retryFlag = true;
+                    int retryCount = 0;
+
+                    while (retryFlag)
+                    {
+                        try
+                        {
+                            if(retryCount > JobberConfiguration.ProducerTransientHandleMaxRetryCount)
+                            {
+                                retryFlag = false;
+                                return;
+                            }
+
+                            await JobberConfiguration.SendEndpoints.Values.First().Send(job);
+
+                            retryFlag = false;
+                            producedJobs++;
+                        }
+                        catch (Exception ex)
+                        {
+                            retryCount++;
+
+                            ex.Data.Add(job.CorrelationId, JsonConvert.SerializeObject(job.Data));
+
+                            Logger.Error(ex);
+                        }
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Logger.Error(ex);
+                    try
+                    {
+                        await JobberConfiguration.SendEndpoints.Values.First().Send(job);
+
+                        producedJobs++;
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Data.Add(job.CorrelationId, JsonConvert.SerializeObject(job.Data));
+
+                        Logger.Error(ex);
+                    }
                 }
             });
 
@@ -60,14 +97,50 @@ namespace Jobber.Core
             int producedJobs = 0;
             jobs.ForEach(async job =>
             {
-                try
+                if (JobberConfiguration.IsProducerTransientHandleModOn)
                 {
-                    await JobberConfiguration.SendEndpoints[job.QueueName].Send(job.Job);
-                    producedJobs++;
+                    bool retryFlag = true;
+                    int retryCount = 0;
+
+                    while (retryFlag)
+                    {
+                        try
+                        {
+                            if (retryCount > JobberConfiguration.ProducerTransientHandleMaxRetryCount)
+                            {
+                                retryFlag = false;
+                                return;
+                            }
+
+                            await JobberConfiguration.SendEndpoints[job.QueueName].Send(job.Job);
+
+                            retryFlag = false;
+                            producedJobs++;
+                        }
+                        catch (Exception ex)
+                        {
+                            retryCount++;
+
+                            ex.Data.Add(job.Job.CorrelationId, JsonConvert.SerializeObject(job.Job.Data));
+
+                            Logger.Error(ex);
+                        }
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Logger.Error(ex);
+                    try
+                    {
+                        await JobberConfiguration.SendEndpoints[job.QueueName].Send(job.Job);
+
+                        producedJobs++;
+                    }
+                    catch (Exception ex)
+                    {
+                        ex.Data.Add(job.Job.CorrelationId, JsonConvert.SerializeObject(job.Job.Data));
+
+                        Logger.Error(ex);
+                    }
                 }
             });
 

@@ -24,5 +24,7 @@ namespace Jobber.Core
         public static string RedisPassword { get; set; }
         public static TimeSpan LockingDuration { get; set; }
         public static int RedisDatabase { get; set; }
+        public static bool IsProducerTransientHandleModOn { get; set; }
+        public static int ProducerTransientHandleMaxRetryCount { get; set; }
     }
 }

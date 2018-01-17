@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
 using Jobber.Core;
 
 namespace Jobber.Sample.JobProducer
@@ -27,10 +25,11 @@ namespace Jobber.Sample.JobProducer
                                   .EnableServiceRecovery(restartDelayInMinutes)
                                   .CreateJobProducer()
                                         .SetRabbitMqCredentials(rabbitMqUri, rabbitMqUserName, rabbitMqPassword)
-                                        //.SetQueueName(rabbitMqTodoQueueName)
-                                        //.SetJobProducer<TodoJobProducer>()
-                                        .SetMultipleQueueName(rabbitMqTodoQueueName, rabbitMqTodoQueueName2)
-                                        .SetJobProducer<TodoJobMultipleQueueProducer>()
+                                        .SetQueueName(rabbitMqTodoQueueName)
+                                        .SetJobProducer<TodoJobProducer>()
+                                        .UseLinearRetryPolicy(5)
+                                        //.SetMultipleQueueName(rabbitMqTodoQueueName, rabbitMqTodoQueueName2)
+                                        //.SetJobProducer<TodoJobMultipleQueueProducer>()
                                         .SetSchedulingTickTime(schedulingTickTime)
                                         //.HighAvailabilitySetup()
                                         //        .UseActivePassive()
